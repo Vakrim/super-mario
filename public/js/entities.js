@@ -1,23 +1,22 @@
-import Entity from './Entity.js';
-import Go from './traits/Go.js';
-import Jump from './traits/Jump.js';
-import Velocity from './traits/Velocity.js';
-import {loadMarioSprite} from './sprites.js';
+import Entity from './Entity';
+import Go from './traits/Go';
+import Jump from './traits/Jump';
+import Velocity from './traits/Velocity';
+import { loadMarioSprite } from './sprites';
 
 export function createMario() {
-    return loadMarioSprite()
-    .then(sprite => {
-        const mario = new Entity();
-        mario.size.set(14, 16);
+  return loadMarioSprite().then(sprite => {
+    const mario = new Entity();
+    mario.size.set(14, 16);
 
-        mario.addTrait(new Go());
-        mario.addTrait(new Jump());
-        //mario.addTrait(new Velocity());
+    mario.addTrait(new Go());
+    mario.addTrait(new Jump());
+    //mario.addTrait(new Velocity());
 
-        mario.draw = function drawMario(context) {
-            sprite.draw('idle', context, 0, 0);
-        }
+    mario.draw = function drawMario(context) {
+      sprite.draw('idle', context, 0, 0);
+    };
 
-        return mario;
-    });
+    return mario;
+  });
 }
