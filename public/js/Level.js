@@ -1,6 +1,5 @@
 import Compositor from './Compositor';
-import TileCollider from './TileCollider';
-import { Matrix } from './math';
+import GroundCollider from './GroundCollider';
 
 export default class Level {
   constructor() {
@@ -8,20 +7,25 @@ export default class Level {
 
     this.comp = new Compositor();
     this.entities = new Set();
-    this.tiles = new Matrix();
-
-    this.tileCollider = new TileCollider(this.tiles);
+    this.grounds = new Set();
   }
 
   update(deltaTime) {
+    const groundColliders = new Set();
+    this.grounds.forEach(ground => groundColliders.add(new GroundCollider(ground)));
+
     this.entities.forEach(entity => {
       entity.update(deltaTime);
 
       entity.pos.x += entity.vel.x * deltaTime;
-      this.tileCollider.checkX(entity);
+      groundColliders.forEach(collider => {
+        collider.checkX(entity);
+      });
 
       entity.pos.y += entity.vel.y * deltaTime;
-      this.tileCollider.checkY(entity);
+      groundColliders.forEach(collider => {
+        collider.checkY(entity);
+      });
 
       entity.vel.y += this.gravity * deltaTime;
     });
